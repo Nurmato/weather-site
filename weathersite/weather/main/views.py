@@ -18,6 +18,9 @@ def weather(request):
         url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
         response = requests.get(url)
         data_dict = response.json()     # json - > dict
+
+        icon_id = data_dict['weather'][0]['icon']
+
         translator = Translator()
         w_cond = translator.translate(data_dict['weather'][0]['description'], dest='ru').text
         Weather = f"Погода в городе {city_name.title()}: {w_cond}"
@@ -32,6 +35,7 @@ def weather(request):
         min_temp = f"Минимальная температура в городе {city_name.title()}: {data_dict['main']['temp_min'] }°C"
         # temp_max
         max_temp = f"Максимальная температура в городе {city_name.title()}: {data_dict['main']['temp_max'] }°C"
+   
 
-        return render(request, 'index.html', context={'Weather':Weather, 'temp':temp, 'condition_weather':condition_weather, 'feels_like':feels_like, 'min_temp':min_temp, 'max_temp':max_temp})
+        return render(request, 'index.html', context={'Weather':Weather, 'temp':temp, 'condition_weather':condition_weather, 'feels_like':feels_like, 'min_temp':min_temp, 'max_temp':max_temp,'icon_id':icon_id } )
         # print(city_name)
